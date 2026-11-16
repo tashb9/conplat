@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit a Joke</title>
+</head>
+
+<body>
+
+    <h1>Submit a Joke</h1>
+
+    <form id="jokeForm">
+
+        <label for="setup">Joke Setup:</label>
+        <br>
+        <textarea id="setup" required></textarea>
+
+        <br><br>
+
+        <label for="punchline">Punchline:</label>
+        <br>
+        <textarea id="punchline" required></textarea>
+
+        <br><br>
+
+        <label for="jokeType">Joke Type:</label>
+        <br>
+        <select id="jokeType">
+        </select>
+
+        <br><br>
+
+        <label for="newType">Or enter a new type:</label>
+        <br>
+        <input type="text" id="newType">
+
+        <br><br>
+
+        <button type="submit">Submit Joke</button>
+
+    </form>
+
+    <p id="message"></p>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

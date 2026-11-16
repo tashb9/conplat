@@ -1,2 +1,6 @@
+
 node_modules/
 .env
+mysql-data/
+*.log
+.DS_Store
