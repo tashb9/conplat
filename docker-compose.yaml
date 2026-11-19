@@ -21,6 +21,8 @@ services:
     env_file: .env
     environment:
       PORT: 3001
+      JOKE_SERVICE_URL: http://joke:3000
+      RABBITMQ_URL: amqp://admin:admin123@rabbitmq:5672
     ports:
       - "3001:3001"
     depends_on:
@@ -28,6 +30,8 @@ services:
         condition: service_healthy
     networks:
       - appnet
+    volumes:
+      - submit-types-cache:/cache
 
   mysql:
     image: mysql:8.4
@@ -48,9 +52,43 @@ services:
     networks:
       - appnet
 
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: conplat-rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - appnet
+
+  etl:
+    build:
+      context: .
+      dockerfile: etl-app/dockerfile
+    env_file: .env
+    environment:
+      RABBITMQ_URL: amqp://admin:admin123@rabbitmq:5672
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+    networks:
+      - appnet
+    restart: unless-stopped
+
 networks:
   appnet:
     driver: bridge
 
 volumes:
   mysql-data:
+  submit-types-cache:
+  rabbitmq-data:
